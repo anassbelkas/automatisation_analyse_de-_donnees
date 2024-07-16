@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Statistiques des Mouvements</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="text-center">Statistiques des Mouvements</h1>
+      <form method="post" class="form mt-4">
+        <div class="form-group">
+          <label for="date_selection_type">Type de sélection de date :</label>
+          <select
+            id="date_selection_type"
+            name="date_selection_type"
+            class="form-control"
+          >
+            <option value="single">Date unique</option>
+            <option value="range">Plage de dates</option>
+          </select>
+        </div>
+
+        <div id="single_date" class="form-group">
+          <label for="date">Choisissez une date :</label>
+          <input type="date" id="date" name="date" class="form-control" />
+        </div>
+
+        <div id="date_range" class="form-group" style="display: none">
+          <label for="start_date">Date de début :</label>
+          <input
+            type="date"
+            id="start_date"
+            name="start_date"
+            class="form-control"
+          />
+          <label for="end_date" class="mt-2">Date de fin :</label>
+          <input
+            type="date"
+            id="end_date"
+            name="end_date"
+            class="form-control"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block mt-3">
+          Soumettre
+        </button>
+      </form>
+
+      {% if results %}
+      <div class="results">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Statistiques Globales du {{ date }}</h2>
+            <h3 class="card-subtitle mb-2 text-muted">Ramassage :</h3>
+            <p>
+              Durée totale : {{
+              results['ramassage_global_stats']['TotalDuration'] }}
+            </p>
+            <p>
+              Durée minimale : {{
+              results['ramassage_global_stats']['MinDuration'] }}
+            </p>
+            <p>
+              Durée maximale : {{
+              results['ramassage_global_stats']['MaxDuration'] }}
+            </p>
+            <p>
+              Nombre total de commandes : {{
+              results['ramassage_global_stats']['TotalOrders'] }}
+            </p>
+            <p>
+              Temps moyen par commande : {{
+              results['ramassage_global_stats']['MeanTimePerOrder'] }}
+            </p>
+
+            <h3 class="card-subtitle mb-2 text-muted">Eclatement :</h3>
+            <p>
+              Durée totale : {{
+              results['eclatage_global_stats']['TotalDuration'] }}
+            </p>
+            <p>
+              Durée minimale : {{
+              results['eclatage_global_stats']['MinDuration'] }}
+            </p>
+            <p>
+              Durée maximale : {{
+              results['eclatage_global_stats']['MaxDuration'] }}
+            </p>
+            <p>
+              Nombre total de commandes : {{
+              results['eclatage_global_stats']['TotalOrders'] }}
+            </p>
+            <p>
+              Temps moyen par commande : {{
+              results['eclatage_global_stats']['MeanTimePerOrder'] }}
+            </p>
+
+            <h3 class="card-subtitle mb-2 text-muted">Colisage :</h3>
+            <p>
+              Durée totale : {{
+              results['colisage_global_stats']['TotalDuration'] }}
+            </p>
+            <p>
+              Durée minimale : {{
+              results['colisage_global_stats']['MinDuration'] }}
+            </p>
+            <p>
+              Durée maximale : {{
+              results['colisage_global_stats']['MaxDuration'] }}
+            </p>
+            <p>
+              Nombre total de commandes : {{
+              results['colisage_global_stats']['TotalOrders'] }}
+            </p>
+            <p>
+              Temps moyen par commande : {{
+              results['colisage_global_stats']['MeanTimePerOrder'] }}
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">
+              Statistiques par Utilisateur du {{ date }}
+            </h2>
+            <h3 class="card-subtitle mb-2 text-muted">Ramassage :</h3>
+            {% for stat in results['ramassage_stats'] %}
+            <h5><strong>Utilisateur :</strong> {{ stat['Utilisateur'] }}</h5>
+            <p><strong>Durée totale :</strong> {{ stat['TotalDuration'] }}</p>
+            <p><strong>Durée minimale :</strong> {{ stat['MinDuration'] }}</p>
+            <p><strong>Durée maximale :</strong> {{ stat['MaxDuration'] }}</p>
+            <p><strong>Nombre de commandes :</strong> {{ stat['Orders'] }}</p>
+            <p>
+              <strong>Temps moyen par commande :</strong> {{
+              stat['MeanTimePerOrder'] }}
+            </p>
+            {% endfor %}
+
+            <h3 class="card-subtitle mb-2 text-muted">Eclatement :</h3>
+            {% for stat in results['eclatage_stats'] %}
+            <h5><strong>Utilisateur :</strong> {{ stat['Utilisateur'] }}</h5>
+            <p><strong>Durée totale :</strong> {{ stat['TotalDuration'] }}</p>
+            <p><strong>Durée minimale :</strong> {{ stat['MinDuration'] }}</p>
+            <p><strong>Durée maximale :</strong> {{ stat['MaxDuration'] }}</p>
+            <p><strong>Nombre de commandes :</strong> {{ stat['Orders'] }}</p>
+            <p>
+              <strong>Temps moyen par commande :</strong> {{
+              stat['MeanTimePerOrder'] }}
+            </p>
+            {% endfor %}
+
+            <h3 class="card-subtitle mb-2 text-muted">Colisage :</h3>
+            {% for stat in results['colisage_stats'] %}
+            <h5><strong>Utilisateur :</strong> {{ stat['Utilisateur'] }}</h5>
+            <p><strong>Durée totale :</strong> {{ stat['TotalDuration'] }}</p>
+            <p><strong>Durée minimale :</strong> {{ stat['MinDuration'] }}</p>
+            <p><strong>Durée maximale :</strong> {{ stat['MaxDuration'] }}</p>
+            <p><strong>Nombre de commandes :</strong> {{ stat['Orders'] }}</p>
+            <p>
+              <strong>Temps moyen par commande :</strong> {{
+              stat['MeanTimePerOrder'] }}
+            </p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %} {% if plot_url_ramassage %}
+      <div class="results">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h2 class="card-title">
+              Ramassage du {{ start_date }} au {{ end_date }}
+            </h2>
+            <img
+              src="data:image/png;base64,{{ plot_url_ramassage }}"
+              class="img-fluid"
+              alt="Courbe de Ramassage"
+            />
+          </div>
+        </div>
+      </div>
+      {% endif %} {% if plot_url_eclatement %}
+      <div class="results">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h2 class="card-title">
+              Eclatement du {{ start_date }} au {{ end_date }}
+            </h2>
+            <img
+              src="data:image/png;base64,{{ plot_url_eclatement }}"
+              class="img-fluid"
+              alt="Courbe de Eclatement"
+            />
+          </div>
+        </div>
+      </div>
+      {% endif %} {% if plot_url_colisage %}
+      <div class="results">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h2 class="card-title">
+              Colisage du {{ start_date }} au {{ end_date }}
+            </h2>
+            <img
+              src="data:image/png;base64,{{ plot_url_colisage }}"
+              class="img-fluid"
+              alt="Courbe de Colisage"
+            />
+          </div>
+        </div>
+      </div>
+      {% endif %} {% if plot_url_user_ramassage %}
+      <div class="results">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h2 class="card-title">
+              Temps moyen par utilisateur pour le Ramassage du {{ start_date }}
+              au {{ end_date }}
+            </h2>
+            <img
+              src="data:image/png;base64,{{ plot_url_user_ramassage }}"
+              class="img-fluid"
+              alt="Courbe de Temps moyen par utilisateur pour le Ramassage"
+            />
+          </div>
+        </div>
+      </div>
+      {% endif %} {% if plot_url_user_colisage %}
+      <div class="results">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h2 class="card-title">
+              Temps moyen par utilisateur pour le Colisage du {{ start_date }}
+              au {{ end_date }}
+            </h2>
+            <img
+              src="data:image/png;base64,{{ plot_url_user_colisage }}"
+              class="img-fluid"
+              alt="Courbe de Temps moyen par utilisateur pour le Colisage"
+            />
+          </div>
+        </div>
+      </div>
+      {% endif %} {% if plot_url_distance %}
+      <div class="results">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h2 class="card-title">
+              Distance moyenne parcourue du {{ start_date }} au {{ end_date }}
+            </h2>
+            <img
+              src="data:image/png;base64,{{ plot_url_distance }}"
+              class="img-fluid"
+              alt="Courbe de distance moyenne parcourue"
+            />
+          </div>
+        </div>
+      </div>
+      {% endif %} {% if stats_2 %}
+      <div class="results">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h2 class="card-title">
+              Autres Statistiques pour la date {{ date }}
+            </h2>
+            <h3 class="card-subtitle mb-2 text-muted">
+              Pourcentage d'emplacement Ramassées en R :
+            </h3>
+            <p>{{ stats_2['percentage_ramassees_en_r'] }}%</p>
+          </div>
+        </div>
+      </div>
+      {% endif %} {% if plot_url_ramassees_en_r %}
+      <div class="results">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h2 class="card-title">
+              Pourcentage Ramassées en R du {{ start_date }} au {{ end_date }}
+            </h2>
+            <img
+              src="data:image/png;base64,{{ plot_url_ramassees_en_r }}"
+              class="img-fluid"
+              alt="Courbe de pourcentage"
+            />
+          </div>
+        </div>
+      </div>
+      {% endif %} {% if stats_3 %}
+      <div class="results">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h2 class="card-title">Distances parcourues pour le {{ date }}</h2>
+            <ul>
+              {% for distance_info in stats_3['distances'] %}
+              <li>
+                <strong>Ramasse :</strong> {{ distance_info['Group'] }}<br />
+                <strong>Distance parcourue :</strong> {{
+                distance_info['Distance(m)'] }} mètres
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- {% if stats_4 %}
+        <div class="results">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h2 class="card-title">Pourcentage des commandes passées avant 13h pour le {{ date }}</h2>
+                    <p>{{ stats_4['percentage_commande_passees_avant_13h'] }}%</p>
+                </div>
+            </div>
+        </div>
+        {% endif %} -->
+
+      {% if error %}
+      <div class="alert alert-danger mt-4">{{ error }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      document
+        .getElementById("date_selection_type")
+        .addEventListener("change", function () {
+          if (this.value === "single") {
+            document.getElementById("single_date").style.display = "block";
+            document.getElementById("date_range").style.display = "none";
+          } else {
+            document.getElementById("single_date").style.display = "none";
+            document.getElementById("date_range").style.display = "block";
+          }
+        });
+    </script>
+  </body>
+</html>
