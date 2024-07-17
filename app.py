@@ -58,16 +58,16 @@ def load_and_process_data(df):
         stats = []
         for user, group in grouped:
             total_duration = group['Duration'].sum()
-            min_duration = group[group['Duration'] != timedelta(0)]['Duration'].min()
-            max_duration = group['Duration'].max()
+            # min_duration = group[group['Duration'] != timedelta(0)]['Duration'].min()
+            # max_duration = group['Duration'].max()
             user_orders = original_df[original_df['Utilisateur'] == user]['Num cde client'].nunique()
             user_orders = max(user_orders, 1)
             mean_time_per_order = total_duration / user_orders
             stats.append({
                 'Utilisateur': user,
                 'TotalDuration': total_duration,
-                'MinDuration': min_duration if pd.notna(min_duration) else timedelta(0),
-                'MaxDuration': max_duration,
+                # 'MinDuration': min_duration if pd.notna(min_duration) else timedelta(0),
+                # 'MaxDuration': max_duration,
                 'Orders': user_orders,
                 'MeanTimePerOrder': mean_time_per_order
             })
@@ -79,14 +79,14 @@ def load_and_process_data(df):
 
     def calculate_global_stats(stats_df):
         total_duration = stats_df['TotalDuration'].sum()
-        min_duration = stats_df['MinDuration'].min()
-        max_duration = stats_df['MaxDuration'].max()
+        # min_duration = stats_df['MinDuration'].min()
+        # max_duration = stats_df['MaxDuration'].max()
         total_orders = stats_df['Orders'].sum()
         mean_time_per_order = total_duration / total_orders if total_orders > 0 else timedelta(0)
         return {
             'TotalDuration': total_duration,
-            'MinDuration': min_duration,
-            'MaxDuration': max_duration,
+            # 'MinDuration': min_duration,
+            # 'MaxDuration': max_duration,
             'TotalOrders': total_orders,
             'MeanTimePerOrder': mean_time_per_order
         }

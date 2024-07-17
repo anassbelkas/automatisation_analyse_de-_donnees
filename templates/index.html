@@ -18,7 +18,7 @@
     />
   </head>
   <body>
-    <div class="container mt-5">
+    <div class="container mt-1">
       <h1 class="text-center">Statistiques des Mouvements</h1>
       <form method="post" class="form mt-4">
         <div class="form-group">
@@ -59,7 +59,6 @@
           Soumettre
         </button>
       </form>
-
       {% if results %}
       <div class="results">
         <div class="card">
@@ -69,14 +68,6 @@
             <p>
               Durée totale : {{
               results['ramassage_global_stats']['TotalDuration'] }}
-            </p>
-            <p>
-              Durée minimale : {{
-              results['ramassage_global_stats']['MinDuration'] }}
-            </p>
-            <p>
-              Durée maximale : {{
-              results['ramassage_global_stats']['MaxDuration'] }}
             </p>
             <p>
               Nombre total de commandes : {{
@@ -93,14 +84,6 @@
               results['eclatage_global_stats']['TotalDuration'] }}
             </p>
             <p>
-              Durée minimale : {{
-              results['eclatage_global_stats']['MinDuration'] }}
-            </p>
-            <p>
-              Durée maximale : {{
-              results['eclatage_global_stats']['MaxDuration'] }}
-            </p>
-            <p>
               Nombre total de commandes : {{
               results['eclatage_global_stats']['TotalOrders'] }}
             </p>
@@ -113,14 +96,6 @@
             <p>
               Durée totale : {{
               results['colisage_global_stats']['TotalDuration'] }}
-            </p>
-            <p>
-              Durée minimale : {{
-              results['colisage_global_stats']['MinDuration'] }}
-            </p>
-            <p>
-              Durée maximale : {{
-              results['colisage_global_stats']['MaxDuration'] }}
             </p>
             <p>
               Nombre total de commandes : {{
@@ -142,8 +117,6 @@
             {% for stat in results['ramassage_stats'] %}
             <h5><strong>Utilisateur :</strong> {{ stat['Utilisateur'] }}</h5>
             <p><strong>Durée totale :</strong> {{ stat['TotalDuration'] }}</p>
-            <p><strong>Durée minimale :</strong> {{ stat['MinDuration'] }}</p>
-            <p><strong>Durée maximale :</strong> {{ stat['MaxDuration'] }}</p>
             <p><strong>Nombre de commandes :</strong> {{ stat['Orders'] }}</p>
             <p>
               <strong>Temps moyen par commande :</strong> {{
@@ -155,8 +128,6 @@
             {% for stat in results['eclatage_stats'] %}
             <h5><strong>Utilisateur :</strong> {{ stat['Utilisateur'] }}</h5>
             <p><strong>Durée totale :</strong> {{ stat['TotalDuration'] }}</p>
-            <p><strong>Durée minimale :</strong> {{ stat['MinDuration'] }}</p>
-            <p><strong>Durée maximale :</strong> {{ stat['MaxDuration'] }}</p>
             <p><strong>Nombre de commandes :</strong> {{ stat['Orders'] }}</p>
             <p>
               <strong>Temps moyen par commande :</strong> {{
@@ -168,106 +139,12 @@
             {% for stat in results['colisage_stats'] %}
             <h5><strong>Utilisateur :</strong> {{ stat['Utilisateur'] }}</h5>
             <p><strong>Durée totale :</strong> {{ stat['TotalDuration'] }}</p>
-            <p><strong>Durée minimale :</strong> {{ stat['MinDuration'] }}</p>
-            <p><strong>Durée maximale :</strong> {{ stat['MaxDuration'] }}</p>
             <p><strong>Nombre de commandes :</strong> {{ stat['Orders'] }}</p>
             <p>
               <strong>Temps moyen par commande :</strong> {{
               stat['MeanTimePerOrder'] }}
             </p>
             {% endfor %}
-          </div>
-        </div>
-      </div>
-      {% endif %} {% if plot_url_ramassage %}
-      <div class="results">
-        <div class="card mt-4">
-          <div class="card-body">
-            <h2 class="card-title">
-              Ramassage du {{ start_date }} au {{ end_date }}
-            </h2>
-            <img
-              src="data:image/png;base64,{{ plot_url_ramassage }}"
-              class="img-fluid"
-              alt="Courbe de Ramassage"
-            />
-          </div>
-        </div>
-      </div>
-      {% endif %} {% if plot_url_eclatement %}
-      <div class="results">
-        <div class="card mt-4">
-          <div class="card-body">
-            <h2 class="card-title">
-              Eclatement du {{ start_date }} au {{ end_date }}
-            </h2>
-            <img
-              src="data:image/png;base64,{{ plot_url_eclatement }}"
-              class="img-fluid"
-              alt="Courbe de Eclatement"
-            />
-          </div>
-        </div>
-      </div>
-      {% endif %} {% if plot_url_colisage %}
-      <div class="results">
-        <div class="card mt-4">
-          <div class="card-body">
-            <h2 class="card-title">
-              Colisage du {{ start_date }} au {{ end_date }}
-            </h2>
-            <img
-              src="data:image/png;base64,{{ plot_url_colisage }}"
-              class="img-fluid"
-              alt="Courbe de Colisage"
-            />
-          </div>
-        </div>
-      </div>
-      {% endif %} {% if plot_url_user_ramassage %}
-      <div class="results">
-        <div class="card mt-4">
-          <div class="card-body">
-            <h2 class="card-title">
-              Temps moyen par utilisateur pour le Ramassage du {{ start_date }}
-              au {{ end_date }}
-            </h2>
-            <img
-              src="data:image/png;base64,{{ plot_url_user_ramassage }}"
-              class="img-fluid"
-              alt="Courbe de Temps moyen par utilisateur pour le Ramassage"
-            />
-          </div>
-        </div>
-      </div>
-      {% endif %} {% if plot_url_user_colisage %}
-      <div class="results">
-        <div class="card mt-4">
-          <div class="card-body">
-            <h2 class="card-title">
-              Temps moyen par utilisateur pour le Colisage du {{ start_date }}
-              au {{ end_date }}
-            </h2>
-            <img
-              src="data:image/png;base64,{{ plot_url_user_colisage }}"
-              class="img-fluid"
-              alt="Courbe de Temps moyen par utilisateur pour le Colisage"
-            />
-          </div>
-        </div>
-      </div>
-      {% endif %} {% if plot_url_distance %}
-      <div class="results">
-        <div class="card mt-4">
-          <div class="card-body">
-            <h2 class="card-title">
-              Distance moyenne parcourue du {{ start_date }} au {{ end_date }}
-            </h2>
-            <img
-              src="data:image/png;base64,{{ plot_url_distance }}"
-              class="img-fluid"
-              alt="Courbe de distance moyenne parcourue"
-            />
           </div>
         </div>
       </div>
@@ -282,21 +159,6 @@
               Pourcentage d'emplacement Ramassées en R :
             </h3>
             <p>{{ stats_2['percentage_ramassees_en_r'] }}%</p>
-          </div>
-        </div>
-      </div>
-      {% endif %} {% if plot_url_ramassees_en_r %}
-      <div class="results">
-        <div class="card mt-4">
-          <div class="card-body">
-            <h2 class="card-title">
-              Pourcentage Ramassées en R du {{ start_date }} au {{ end_date }}
-            </h2>
-            <img
-              src="data:image/png;base64,{{ plot_url_ramassees_en_r }}"
-              class="img-fluid"
-              alt="Courbe de pourcentage"
-            />
           </div>
         </div>
       </div>
@@ -330,7 +192,123 @@
         </div>
         {% endif %} -->
 
-      {% if error %}
+      <div class="row">
+        {% if plot_url_ramassage %}
+        <div class="results col">
+          <div class="card mt-4">
+            <div class="card-body">
+              <h3 class="card-title">
+                Ramassage du {{ start_date }} au {{ end_date }}
+              </h3>
+              <img
+                src="data:image/png;base64,{{ plot_url_ramassage }}"
+                class="img-fluid"
+                alt="Courbe de Ramassage"
+              />
+            </div>
+          </div>
+        </div>
+        {% endif %} {% if plot_url_eclatement %}
+        <div class="results col">
+          <div class="card mt-4">
+            <div class="card-body">
+              <h3 class="card-title">
+                Eclatement du {{ start_date }} au {{ end_date }}
+              </h3>
+              <img
+                src="data:image/png;base64,{{ plot_url_eclatement }}"
+                class="img-fluid"
+                alt="Courbe de Eclatement"
+              />
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <div class="row">
+        {% if plot_url_colisage %}
+        <div class="results col">
+          <div class="card mt-4">
+            <div class="card-body">
+              <h3 class="card-title">
+                Colisage du {{ start_date }} au {{ end_date }}
+              </h3>
+              <img
+                src="data:image/png;base64,{{ plot_url_colisage }}"
+                class="img-fluid"
+                alt="Courbe de Colisage"
+              />
+            </div>
+          </div>
+        </div>
+        {% endif %}{% if plot_url_ramassees_en_r %}
+        <div class="results col">
+          <div class="card mt-4">
+            <div class="card-body">
+              <h3 class="card-title">
+                Pourcentage Ramassées en R du {{ start_date }} au {{ end_date }}
+              </h3>
+              <img
+                src="data:image/png;base64,{{ plot_url_ramassees_en_r }}"
+                class="img-fluid"
+                alt="Courbe de pourcentage"
+              />
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <div class="row">
+        {% if plot_url_user_ramassage %}
+        <div class="results col">
+          <div class="card mt-4">
+            <div class="card-body">
+              <h3 class="card-title">
+                Temps moyen par utilisateur pour le Ramassage du {{ start_date
+                }} au {{ end_date }}
+              </h3>
+              <img
+                src="data:image/png;base64,{{ plot_url_user_ramassage }}"
+                class="img-fluid"
+                alt="Courbe de Temps moyen par utilisateur pour le Ramassage"
+              />
+            </div>
+          </div>
+        </div>
+        {% endif %} {% if plot_url_user_colisage %}
+        <div class="results col">
+          <div class="card mt-4">
+            <div class="card-body">
+              <h3 class="card-title">
+                Temps moyen par utilisateur pour le Colisage du {{ start_date }}
+                au {{ end_date }}
+              </h3>
+              <img
+                src="data:image/png;base64,{{ plot_url_user_colisage }}"
+                class="img-fluid"
+                alt="Courbe de Temps moyen par utilisateur pour le Colisage"
+              />
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% if plot_url_distance %}
+      <div class="results">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h3 class="card-title">
+              Distance moyenne parcourue du {{ start_date }} au {{ end_date }}
+            </h3>
+            <img
+              src="data:image/png;base64,{{ plot_url_distance }}"
+              class="img-fluid"
+              alt="Courbe de distance moyenne parcourue"
+            />
+          </div>
+        </div>
+      </div>
+      {% endif %} {% if error %}
       <div class="alert alert-danger mt-4">{{ error }}</div>
       {% endif %}
     </div>
