@@ -1,4 +1,9 @@
+[build]
+  command = "python app.py"
+  publish = "public"
+
 [[redirects]]
   from = "/*"
   to = "/templates/index.html"
   status = 200
+  force = true
