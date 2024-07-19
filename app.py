@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, render_template, request
 import json
 import pandas as pd
@@ -8,16 +9,14 @@ matplotlib.use('Agg')  # Utilisation du backend Agg pour Matplotlib
 import matplotlib.pyplot as plt
 import io
 import base64
+from pymongo import MongoClient
 
 app = Flask(__name__)
-
-from pymongo import MongoClient
 
 # Configuration de la connexion MongoDB Atlas
 client = MongoClient("mongodb+srv://anass:anass@cluster0.oqk5dfg.mongodb.net/")
 db = client['Ouilog']
 collection = db['mouvements2024']
-
 
 # Fonction pour charger et traiter les données du premier script
 def load_and_process_data(df):
@@ -58,16 +57,12 @@ def load_and_process_data(df):
         stats = []
         for user, group in grouped:
             total_duration = group['Duration'].sum()
-            # min_duration = group[group['Duration'] != timedelta(0)]['Duration'].min()
-            # max_duration = group['Duration'].max()
             user_orders = original_df[original_df['Utilisateur'] == user]['Num cde client'].nunique()
             user_orders = max(user_orders, 1)
             mean_time_per_order = total_duration / user_orders
             stats.append({
                 'Utilisateur': user,
                 'TotalDuration': total_duration,
-                # 'MinDuration': min_duration if pd.notna(min_duration) else timedelta(0),
-                # 'MaxDuration': max_duration,
                 'Orders': user_orders,
                 'MeanTimePerOrder': mean_time_per_order
             })
@@ -79,14 +74,10 @@ def load_and_process_data(df):
 
     def calculate_global_stats(stats_df):
         total_duration = stats_df['TotalDuration'].sum()
-        # min_duration = stats_df['MinDuration'].min()
-        # max_duration = stats_df['MaxDuration'].max()
         total_orders = stats_df['Orders'].sum()
         mean_time_per_order = total_duration / total_orders if total_orders > 0 else timedelta(0)
         return {
             'TotalDuration': total_duration,
-            # 'MinDuration': min_duration,
-            # 'MaxDuration': max_duration,
             'TotalOrders': total_orders,
             'MeanTimePerOrder': mean_time_per_order
         }
@@ -138,8 +129,6 @@ def load_and_process_data_2(df):
         return (filtered_references / total_references) * 100 if total_references > 0 else 0
 
     percentage_ramassees_en_r = calculate_percentage(total_references, references_ramassees_en_r)
-    # retourner aussi les titre des article ramassées en R
-    # print(references_ramassees_en_r["Titre"])
     return {'percentage_ramassees_en_r': percentage_ramassees_en_r}
 
 def load_and_process_data_3(df):
@@ -421,4 +410,5 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    from waitress import serve # type: ignore
+    serve(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
